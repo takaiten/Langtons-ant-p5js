@@ -12,6 +12,7 @@ class LangtonsAnt{
         /* size and padding for drawing cells */
         this.size = GRID_SIZE;
         this.padding = res/GRID_SIZE;
+        this.colorsChanged = 0;
 
         /* ant properties */
         let startPoint = floor(GRID_SIZE/2);
@@ -106,6 +107,14 @@ class LangtonsAnt{
                 count++;
             }
         }
+    }
+
+    changeColors(sequnce) {
+        if (this.colorsChanged + 1 > colorOrder.length) {
+            this.colorsChanged = 0;
+        }
+        colorOrder[this.colorsChanged] = color(sequnce);
+        this.colorsChanged++;
     }
 
     isOver() {
