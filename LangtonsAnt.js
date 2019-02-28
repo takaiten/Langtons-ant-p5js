@@ -12,7 +12,6 @@ class LangtonsAnt{
         /* size and padding for drawing cells */
         this.size = GRID_SIZE;
         this.padding = res/GRID_SIZE;
-        this.colorsChanged = 0;
 
         /* ant properties */
         let startPoint = floor(GRID_SIZE/2);
@@ -31,8 +30,11 @@ class LangtonsAnt{
         this.changeBehavior(SEQUENCE);
     }
     drawGrid() {
-        stroke(255, 255, 255, 150);
-        fill(0);
+        // stroke(255, 255, 255, 150);
+        push();
+        stroke(10, 10, 10, 150);
+        fill(255);
+        pop();
         for (let i = 0; i < this.size; i++) {
             for (let j = 0; j < this.size; j++){
                 rect(this.padding*i, this.padding*j, this.padding, this.padding);
@@ -109,12 +111,14 @@ class LangtonsAnt{
         }
     }
 
-    changeColors(sequnce) {
-        if (this.colorsChanged + 1 > colorOrder.length) {
-            this.colorsChanged = 0;
+    changeColors() {
+        let minLenght = arguments.length > colorOrder.length ? colorOrder.length : arguments.length;
+        for (let i = 0; i < minLenght; i++) {
+            if (arguments[i] === '') {
+                i++;
+            }
+            colorOrder[i] = color(arguments[i]);
         }
-        colorOrder[this.colorsChanged] = color(sequnce);
-        this.colorsChanged++;
     }
 
     isOver() {
