@@ -29,6 +29,19 @@ class LangtonsAnt{
         /* set behavior */
         this.changeBehavior(SEQUENCE);
     }
+
+    drawSequence() {
+        push();
+        textSize(38);
+        stroke(0);
+        strokeWeight(2);
+        for (let i = 0; i < colorOrder.length; i++) {
+            fill(colorOrder[i]);
+            text(this.currentSeq.charAt(i), res + 10, (i+1)*40);
+        }
+        pop();
+    }
+
     drawGrid() {
         // stroke(255, 255, 255, 150);
         push();
@@ -109,6 +122,7 @@ class LangtonsAnt{
                 count++;
             }
         }
+        this.currentSeq = sequence;
     }
 
     changeColors() {
@@ -119,6 +133,7 @@ class LangtonsAnt{
             }
             colorOrder[i] = color(arguments[i]);
         }
+        this.drawSequence();
     }
 
     isOver() {
