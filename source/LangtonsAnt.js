@@ -158,10 +158,11 @@ class LangtonsAnt {
     statistics() {
         /* display info and control speed */
         frameRate(this.speedCtrl.value());
+        noStroke();
         fill(255);
-        rect(150, this.area + 17.5, 20 * 17.5, 25);
+        rect(150 + this.speedCtrl.width/2, this.area + 18, 20 * 17.5, 25);
         fill(0);
-        text('SPEED: ' + this.speedCtrl.value(), 150, this.area + 40);
-        text('STEPS: ' + frameCount, 150 + 8 * 17.5, this.area + 40);
+        text('SPEED: ' + this.speedCtrl.value(), 150 + this.speedCtrl.width/2, this.area + 40);
+        text('STEPS: ' + frameCount, 150 + 10 * 17.5 + this.speedCtrl.width/2, this.area + 40);
     }
 }
