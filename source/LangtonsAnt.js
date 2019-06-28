@@ -1,20 +1,22 @@
-var funcOrder = [];
-var colorOrder = [];
-class LangtonsAnt{
-    constructor(GRID_SIZE = 50, START_SPEED = 30, SEQUENCE = 'RL') {
+let funcOrder = [];
+let colorOrder = [];
+
+class LangtonsAnt {
+    constructor(GRID_SIZE = 50, PIXEL_AREA = 500, START_SPEED = 30, SEQUENCE = 'RL') {
         /* initialize matrix  */
         this.matrix = new Array(GRID_SIZE);
-        for(let p = 0; p < GRID_SIZE; p++) {
+        for (let p = 0; p < GRID_SIZE; p++) {
             this.matrix[p] = new Array(GRID_SIZE);
             this.matrix[p].fill(0);
         }
 
         /* size and padding for drawing cells */
+        this.area = PIXEL_AREA;
         this.size = GRID_SIZE;
-        this.padding = res/GRID_SIZE;
+        this.padding = this.area / GRID_SIZE;
 
         /* ant properties */
-        let startPoint = floor(GRID_SIZE/2);
+        let startPoint = floor(GRID_SIZE / 2);
         this.ant = createVector(startPoint, startPoint);
         this.antFacing = 0; // 0 - left, 1 - up, 2 - right, 3 - down
 
@@ -22,8 +24,8 @@ class LangtonsAnt{
         this.drawGrid();
 
         /* init slider for controlling frame rate */
-        this.speedCtrl = createSlider(2,60,START_SPEED,2);
-        this.speedCtrl.position(1, res + 20);
+        this.speedCtrl = createSlider(2, 60, START_SPEED, 2);
+        this.speedCtrl.position(1, this.area + 20);
         textSize(25);
 
         /* set behavior */
@@ -37,7 +39,7 @@ class LangtonsAnt{
         strokeWeight(2);
         for (let i = 0; i < colorOrder.length; i++) {
             fill(colorOrder[i]);
-            text(this.currentSeq.charAt(i), res + 10, (i+1)*40);
+            text(this.currentSeq.charAt(i), this.area + 10, (i + 1) * 40);
         }
         pop();
     }
@@ -49,8 +51,8 @@ class LangtonsAnt{
         fill(255);
         pop();
         for (let i = 0; i < this.size; i++) {
-            for (let j = 0; j < this.size; j++){
-                rect(this.padding*i, this.padding*j, this.padding, this.padding);
+            for (let j = 0; j < this.size; j++) {
+                rect(this.padding * i, this.padding * j, this.padding, this.padding);
             }
         }
     }
@@ -70,6 +72,7 @@ class LangtonsAnt{
             this.antFacing = 0;
         }
     }
+
     turnLeft() {
         if (this.antFacing === 0) {
             this.ant.y += 1;
@@ -87,27 +90,29 @@ class LangtonsAnt{
     }
 
     writeLSequence(num, length) {
-        colorOrder.push(color(floor(random(50,255)), floor(random(50,255)), floor(random(50,255))));
-        funcOrder.push(function(classAnts) {
+        colorOrder.push(color(floor(random(50, 255)), floor(random(50, 255)), floor(random(50, 255))));
+        funcOrder.push(function (classAnts) {
             if (classAnts.matrix[classAnts.ant.x][classAnts.ant.y] === num) {
-                classAnts.matrix[classAnts.ant.x][classAnts.ant.y] = length === num + 1? 0 : num + 1;
+                classAnts.matrix[classAnts.ant.x][classAnts.ant.y] = length === num + 1 ? 0 : num + 1;
                 fill(colorOrder[num]);
-                rect(classAnts.padding*classAnts.ant.x, classAnts.padding*classAnts.ant.y, classAnts.padding, classAnts.padding);
+                rect(classAnts.padding * classAnts.ant.x, classAnts.padding * classAnts.ant.y, classAnts.padding, classAnts.padding);
                 classAnts.turnLeft();
             }
         });
     }
+
     writeRSequence(num, length) {
-        colorOrder.push(color(floor(random(50,255)), floor(random(50,255)), floor(random(50,255))));
-        funcOrder.push(function(classAnts) {
+        colorOrder.push(color(floor(random(50, 255)), floor(random(50, 255)), floor(random(50, 255))));
+        funcOrder.push(function (classAnts) {
             if (classAnts.matrix[classAnts.ant.x][classAnts.ant.y] === num) {
-                classAnts.matrix[classAnts.ant.x][classAnts.ant.y] = length === num + 1? 0 : num + 1;
+                classAnts.matrix[classAnts.ant.x][classAnts.ant.y] = length === num + 1 ? 0 : num + 1;
                 fill(colorOrder[num]);
-                rect(classAnts.padding*classAnts.ant.x, classAnts.padding*classAnts.ant.y, classAnts.padding, classAnts.padding);
+                rect(classAnts.padding * classAnts.ant.x, classAnts.padding * classAnts.ant.y, classAnts.padding, classAnts.padding);
                 classAnts.turnRight();
             }
         });
     }
+
     changeBehavior(sequence) {
         funcOrder.length = 0;
         colorOrder.length = 0;
@@ -139,8 +144,9 @@ class LangtonsAnt{
     isOver() {
         return (this.ant.x > this.size - 1 || this.ant.x < 0 || this.ant.y > this.size - 1 || this.ant.y < 0);
     }
+
     move() {
-        if (this.isOver()){
+        if (this.isOver()) {
             noLoop();
             return;
         }
@@ -153,9 +159,9 @@ class LangtonsAnt{
         /* display info and control speed */
         frameRate(this.speedCtrl.value());
         fill(255);
-        rect(150, res + 17.5, 20*17.5, 25);
+        rect(150, this.area + 17.5, 20 * 17.5, 25);
         fill(0);
-        text('SPEED: ' + this.speedCtrl.value(), 150, res + 40);
-        text('STEPS: ' + frameCount, 150 + 8*17.5, res + 40);
+        text('SPEED: ' + this.speedCtrl.value(), 150, this.area + 40);
+        text('STEPS: ' + frameCount, 150 + 8 * 17.5, this.area + 40);
     }
 }
